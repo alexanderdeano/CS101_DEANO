@@ -1,0 +1,209 @@
+---
+title: "RExercise3"
+author: "Alexander Deano"
+date: "2026-10-14"
+output: html_document
+---
+
+```{r}
+## Part A — Creating Vectors: c(), seq(), rep()
+scores <- c(88, 92, 79, 95, 84)
+subjects <- c("Math", "Science", "English", "History", "PE")
+
+odds <- seq(from = 1, to = 19, by = 2)
+spaced_nums <- seq(from = 0, to = 1, length.out = 5)
+
+rep("A", times = 4)
+rep(c("A", "B"), each = 2)
+rep(c("A", "B"), times = 2)
+```
+##Question #1:
+```{r}
+#Set up a vector named age, consisting of 15, 28, 32, 36, 27, 18, 52, 39, 42, 29, 35, 31, 27, 22, 37, 34, 19, 20, 57, 49, 50, 37, 46, 25, 17, 12, 42, 53, 41, 51, 35, 24, 33, 8.
+
+
+age <- c(15, 28, 32, 36, 27, 18, 52, 39, 42, 29, 35, 31, 27, 22, 37, 34, 19, 20, 57, 49, 50, 37, 46, 25, 17, 12, 42, 53, 41, 51, 35, 24, 33, 8)
+```
+
+```{r}
+# a. How many data points?
+
+length(age)
+```
+
+```{r}
+# b. Find the reciprocal of age?
+
+1 / age
+```
+
+```{r}
+# c.Assign also new_age <- c(age, 0, age). What happens to new_age?
+
+new_age <- c(age, 0, age)
+```
+
+```{r}
+#d: Find the minimum and the maximum value of age.
+
+min(age) # 8
+max(age) # 57
+```
+##Question #2:
+{r}
+#The difference between each and times, is that each repeats each element in the vector. While times, repeats the entire sequence.
+
+
+##Question #3:
+{r}
+# The argument 'by' sets the fixed step size between the numbers, while 'length.out' sets the total count of the values that you want and it calculates automatically.
+
+##Question #4:
+{r}
+#a. Generate a sequence for 20 to 60. Name the vector as vec_num
+```{r}
+vec_num <- 20:60
+```
+
+
+#b. Get the mean for vec_num.
+```{r}
+mean(vec_num)
+```
+
+#c. Get the sum for vec_num.
+```{r}
+sum(vec_num)
+```
+
+#d. How many data points are there in vec_num?
+```{r}
+length(vec_num)
+```
+
+
+
+##Part B — Subsetting (Accessing) Vectors
+```{r}
+grades <- c(88, 92, 79, 95, 84)
+names(grades) <- c("Math", "Science", "English", "History", "PE")
+
+
+# Access the 3rd element using positional indexing
+
+grades[3]
+
+
+# Access the 1st and 4th elements using positional indexing
+
+grades[c(1, 4)]
+
+
+# Access "Science" and "PE" together using their names
+
+grades[c("Science", "PE")]
+```
+Question #5
+```{r}
+#Testing negative indexing removing the first element
+grades[-1]
+
+# Testing logical indexing filtering values >= 85
+grades[grades >= 85]
+```
+#Describe a real situation where you would need negative indexing, and a different situation where logical indexing would be the better tool.
+Logical Indexing Scenario: Logical indexing is ideal when you want to filter data based on a dynamic condition or threshold where you don't know the exact indices beforehand (e.g., filtering out student records where scores fall below a passing grade of 75, or selecting transactions over $1,000).
+
+
+Question #6:
+
+What happens if you run grades[10] (an index that doesn’t exist)? Run it, observe the result, and explain why R responds this way instead of throwing an error.
+# Running grades[10] to see what happens.
+```{r}
+grades[10]
+```
+R returns a missing value (NA) with a missing name (<NA>) instead of throwing an error.
+
+Question #7:
+Print a vector with the integers between 1 and 100 that are not divisible by 3, 5 and 7 using filter option.
+```{r}
+Filter(function(i) { all(i %% c(3, 5, 7) != 0) }, seq(100))
+```
+Part C — Vector Operations and append()
+```{r}
+x <- c(1, 2, 3, 4)
+y <- c(10, 20, 30, 40)
+```
+# TODO: Add x and y element-wise, and print the result
+```{r}
+x + y
+```
+# TODO: Multiply every element of x by 2
+```{r}
+x * 2
+```
+Question 2: Vector Recycling (Different Lengths)
+```{r}
+z <- c(1, 2, 3, 4, 5, 6)
+short <- c(1, 0)
+```
+# TODO: Add z and short together and print the result (Vector Recycling)
+```{r}
+z + short
+```
+Question 3
+```{r}
+fruits <- c("apple", "banana", "cherry")
+
+# Add "date" to the end of fruits
+append(fruits, "date")
+# Output: [1] "apple"  "banana" "cherry" "date"  
+
+# Insert "kiwi" after position 1 (between "apple" and "banana")
+append(fruits, "kiwi", after = 1)
+# Output: [1] "apple"  "kiwi"   "banana" "cherry"
+```
+# Question #8:
+# - In the vectors-recycling chunk, z has 6 elements and short has only 2. R still produced an answer instead of an error.
+R’s recycling rule automatically repeated the elements of the shorter vector ("short") 
+from the beginning until it matched the length of the longer vector ("z").  Since z had 6 elements and short had 2 (1, 0), R recycled short three times 
+to make it (1, 0, 1, 0, 1, 0) so it could perform element-wise addition.
+
+#Question 9: Now try adding z (length 6) to c(1, 0, 1) (length 3) instead. Does it work cleanly?
+Yes, it works cleanly and without any warnings. Because the length of the longer vector (6) 
+is an exact multiple of the shorter vector (3), R recycles c(1, 0, 1) twice smoothly 
+(resulting in 1, 0, 1, 1, 0, 1) to match z's length. R only throws a warning message when 
+the longer vector's length is not a multiple of the shorter vector's length.
+
+# --- 1. Create the student list ---
+```{r}
+student <- list(
+  name = "Maria Santos",
+  age = 20,
+  grades = c(88, 92, 79),
+  is_enrolled = TRUE
+)
+
+
+# --- 2. Access "grades" using single brackets and check its type ---
+student["grades"]
+class(student["grades"])
+# Output type: "list" (Single brackets return a sub-list)
+
+
+# --- 3. Access "grades" using double brackets and check its type ---
+student[["grades"]]
+class(student[["grades"]])
+# Output type: "numeric" (Double brackets unwrap/extract the underlying vector)
+
+
+# --- 4. Access "name" using the $ operator ---
+student$name
+# Output: [1] "Maria Santos"
+
+
+# --- 5. Extract the second grade in a single expression ---
+student[["grades"]][2]
+# Alternatively: student$grades[2]
+# Output: [1] 92
+```

@@ -1,0 +1,138 @@
+---
+title: "RExercise#6Deano"
+author: "Alexander N. Deano"
+date: "2026-10-21"
+output: html_document
+---
+
+#Part A Data Frames
+#Vectors of equal
+```{r}
+name <- c("Ana", "Ben", "Cid", "Dex", "Eli")
+age <- c(20, 21, 19, 22, 20)
+passed <- c(TRUE, TRUE, FALSE, TRUE, FALSE)
+```
+
+#Combine name, age, and passed
+```{r}
+students <- data.frame(name = name, age = age, passed = passed)
+print(students)
+```
+#Check the type of name
+```{r}
+typeof(students[["name"]])
+class(students[["name"]])
+```
+#Creating second data frame
+```{r}
+courses <- data.frame(
+  course_code = c("IS101", "IS102", "IS103"),
+  units = c(3, 3, 2),
+  instructor = c("Dr. P. Reyes", "Dr. R. Santos", "Dr. S. Cruz")
+)
+```
+#Question 1
+A data frame is structured like a rectangular table where rows represent observations and columns represent variables. Because of this grid layout, every column must have an identical number of rows to keep the data evenly aligned. If you try to combine vectors of unequal lengths, R will throw an error (such as arguments imply differing number of rows) because it cannot automatically stretch or cut the data to fit a uniform rectangle.
+
+#Question 2
+Because R implements a data frame as a specialized list where each element of the list is a vector acting as a column. Because lists can contain elements of completely different classes and data types, each column in a data frame can hold its own type (e.g., character, numeric, or logical). In contrast, a standard atomic vector is strictly limited to holding only a single data type throughout all of its elements.
+
+#Part B Subsetting Data Frames
+#Acessing age
+```{r}
+students[["age"]]
+students["age"]
+students[, "age"]
+```
+#Accessing 2nd row
+```{r}
+students[2, ]
+```
+#Accessing row 3 "name"
+```{r}
+students[3, "name"]
+```
+#Returning rows
+```{r}
+students[students[["passed"]] == TRUE, ]
+```
+#Returning rows where passed is TRUE and age is greater than 20
+```{r}
+students[students[["passed"]] == TRUE & students[["age"]] > 20, ]
+```
+#Question 3
+students["age"] returns a mini data frame with 1 column because single brackets keep the original list/data frame structure. On the other hand, students[["age"]] extracts the raw vector inside. It’s like single brackets give you the box with the item inside, while double brackets give you just the item itself.
+
+#Question 4 
+The & operator compares two logical vectors element-by-element and only returns TRUE for rows where both conditions are met at the same time. If I used | instead, it would return rows where either condition is met (or both), which would include more rows in the result.
+
+#Data Frames Properties
+```{r}
+# Use str() on students to see the structure and types of each column
+str(students)
+
+# Use dim(), nrow(), and ncol() on students to report its size
+dim(students)
+nrow(students)
+ncol(students)
+
+# Use names() (or colnames()) to list the column names of students
+names(students)
+
+# Use summary() on students to get summary statistics for each column
+summary(students)
+```
+
+#Question 5
+For the numeric column (age), R shows basic statistics like the mean, median, and min/max values. For the logical column (passed), it counts the total TRUE and FALSE values. For the character column (name), it just gives the length, class, and mode instead of numbers. A mean doesn't make sense for names because text values cannot be added up or averaged mathematically.
+
+#Question 6
+str() is more useful when I want to check the data types, structure, and preview the format of each column at a glance. On the other hand, summary() is more useful when I want to quickly see statistical insights and check the distribution or value counts of my data.
+
+#Part D Data Frame Operations
+```{r}
+# Add a new column called year_level to students
+students[["year_level"]] <- c(2, 3, 1, 4, 2)
+
+# Remove the "passed" column by setting it to NULL
+students[["passed"]] <- NULL
+
+# Sort students by age in ascending order
+students[order(students[["age"]]), ]
+
+# Sort students by age in DESCENDING order
+students[order(students[["age"]], decreasing = TRUE), ]
+```
+
+#Question 7
+No, it would cause an error because that column no longer exists. Keeping track of the data frame's structure matters so we don't try to reference deleted or missing columns in our
+
+#Question 8
+First, order() looks at the age column and generates a vector of row numbers sorted from youngest to oldest. Then, placing those row numbers inside the square brackets tells R to rearrange all the rows of the data frame into that exact new sequence.
+
+
+#Part E Critical Thinking Chall
+```{r}
+
+grades <- data.frame(
+  name = c("Ana", "Ben", "Cid", "Dex", "Eli"),
+  midterm = c(85, 78, 92, 88, 70),
+  final = c(90, 82, 95, 84, 75)
+)
+
+# 2. Add the average column
+grades[["average"]] <- (grades[["midterm"]] + grades[["final"]]) / 2
+
+# 3. Add the remarks column based on the average
+grades[["remarks"]] <- ifelse(grades[["average"]] < 75, "Failed", "Passed")
+
+# 4. Print only the rows where remarks is "Failed", showing just name and average
+grades[grades[["remarks"]] == "Failed", c("name", "average")]
+```
+#Question 9
+We can use order() to sort the data frame by the average or midterm scores to easily spot which students scored the lowest. Then, we can use subsetting brackets to compare individual midterm and final columns side-by-side to see if students with low averages recovered on their finals or stayed consistently low.
+
+
+#Conclusion
+I learned that a data frame is a two-dimensional table in R where each column functions as a vector of equal length. Because it is built as a specialized list, each column can store a different data type while keeping the rows neatly aligned in a grid. I also learned how to manipulate tabular data by creating new variables, subsetting specific columns or rows, and sorting data frames. This makes data frames extremely useful for organizing and analyzing real-world datasets efficiently.
+

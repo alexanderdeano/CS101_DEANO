@@ -1,0 +1,108 @@
+---
+title: "RExercise#7Deano"
+author: "Alexander N. Deano"
+date: "2026-11-08"
+output: html_document
+---
+
+#Part A
+#Question 1
+```{R}
+
+Respondent <- 1:20
+Sex <- c(2,2,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,1,2)
+FathersOccupation <- c(1,3,3,3,1,2,3,1,1,1,3,2,1,3,3,1,3,1,2,1)
+PersonsAtHome <- c(5,7,3,8,5,9,6,7,8,4,7,5,4,7,8,8,3,11,7,6)
+SiblingsAtSchool <- c(6,4,4,1,2,1,5,3,1,2,3,2,5,5,2,1,2,5,3,2)
+TypesOfHouses <- c(1,2,3,1,1,3,3,1,2,3,2,3,2,2,3,3,3,3,3,2)
+
+length(Respondent)
+length(Sex)
+length(FathersOccupation)
+length(PersonsAtHome)
+length(SiblingsAtSchool)
+length(TypesOfHouses)
+
+survey <- data.frame(Respondent, Sex, FathersOccupation,
+                     PersonsAtHome, SiblingsAtSchool, TypesOfHouses)
+```
+print(survey)
+#Question A1A: Inspecting Data Structure & Summary Statistics
+Write code to inspect the internal structure and display quick summary statistics for all variables in the dataset.
+
+```{r}
+str(survey)
+summary(survey)
+```
+#Question A1B: Checking Dataset Dimensions
+Check the overall dimensions, total row count, and column count of the dataframe.
+
+```{r}
+dim(survey)
+nrow(survey)
+ncol(survey)
+```
+#Question A1C: Converting Numeric Codes into Categorical Factors
+Convert Sex, FathersOccupation, and TypesOfHouses from numeric indicators into factor variables with clear value labels, then re-check the structure.
+
+```{r}
+survey$Sex <- factor(survey$Sex, levels = c(1, 2), labels = c("Male", "Female"))
+survey$FathersOccupation <- factor(survey$FathersOccupation, levels = c(1, 2, 3), labels = c("Farmer", "Driver", "Others"))
+survey$TypesOfHouses <- factor(survey$TypesOfHouses, levels = c(1, 2, 3), labels = c("Wood", "Semi-Concrete", "Concrete"))
+
+str(survey)
+```
+#Question A1D: Calculating Numeric Means
+Compute the arithmetic mean for the Respondent IDs, household size (PersonsAtHome), and enrolled siblings (SiblingsAtSchool).
+
+```{r}
+mean(survey$Respondent)
+mean(survey$PersonsAtHome)
+mean(survey$SiblingsAtSchool)
+```
+#Question A1E: Viewing Initial Records
+Extract and display only the first five rows of the survey data frame.
+
+```{r}
+survey[1:5, ]
+```
+#Question A1F: Extracting a Single Column Vector
+Isolate the TypesOfHouses variable and store it as a standalone vector.
+
+```{r}
+types_houses <- survey$TypesOfHouses
+types_houses
+```
+#Question A1G: Filtering Male Farmers
+Subset the dataset to retrieve only respondents who identify as Male and whose fathers work as Farmers.
+
+```{r}
+survey[survey$Sex == "Male" & survey$FathersOccupation == "Farmer", ]
+```
+#Question A1H: Filtering Large Families at School
+Subset the dataset to find all Female respondents who have 5 or more siblings currently attending school.
+
+```{r}
+survey[survey$Sex == "Female" & survey$SiblingsAtSchool >= 5, ]
+
+```
+#Question A2: Data Alignment Principles
+Each row in a tabular dataset corresponds to a single subject's record. Consequently, all vector lengths must match so that every respondent has exactly one recorded observation per variable column.
+
+#Question A3: Level of Measurement Differences
+Sex, FathersOccupation, and TypesOfHouses represent qualitative qualitative groupings (nominal data), where numbers serve only as non-quantitative identifiers. Conversely, PersonsAtHome and SiblingsAtSchool measure quantitative counts (ratio data). Evaluating categorical variables like Sex mathematically is invalid because the assigned numbers possess no underlying magnitude.
+
+#Question A4: Clarity of Coded Values
+Without an accompanying codebook or factor labeling, arbitrary numeric codes like 1 and 2 create ambiguity. An analyst might mistakenly assume 1 represents an ordinal rank, a binary flag, or a test score rather than a demographic category.
+
+#Question A5: Implications of Imbalanced Small Subgroups
+R
+nrow(survey[survey$Sex == "Male", ])
+sum(survey$Sex == "Male")
+Because males account for only 3 out of 20 total observations (15%), the subgroup is underrepresented. Any patterns observed within this small subset are highly sensitive to individual outliers and cannot be generalized to a broader population.
+
+#Question A6: Default Behavior in R
+R defaults to treating numerical entries as continuous or discrete numbers upon import. It lacks context regarding the research design, so categorical variables must be explicitly defined using the factor() function to instruct R to handle them qualitatively.
+
+#Question A7: Mathematical Validity of Means
+The mean of PersonsAtHome (6.65) reflects a real-world count: the average number of residents living under one roof. In contrast, calculating a mean of 1.85 for Sex yields no real-world interpretation, as averaging two arbitrary reference codes (1 and 2) produces a meaningless value.
